@@ -35,30 +35,6 @@ void cetak(int n){
 	}
 }
 
-void gethcost (int len){
-	int h =0, offset;
-	for (int k=0; k<len; k++)
-	{
-		for (int i=0, j=i+1; j < len; i++)
-		{
-				offset = j-i;
-				if ((papan[k][i]==papan[k][j])&&(papan[k][i]==1)&&(papan[k][j]==1)) 
-				{
-					h+=1;
-					hvalue[k][i]=h;
-					hvalue[k][j]=h;
-				}
-				if ((papan[k][i]==papan[k][j-offset])&&(papan[k][i]==1) || (papan[k][i]==papan[k][j+offset])&&(papan[k][i]==1))
-				{
-					h+=1;
-					hvalue[k][i]=h;
-					hvalue[k][j]=h;
-				}
-				j++;
-		}
-	}
-	
-}
 
 void cetakh(int n){
 	int i, j;
@@ -69,6 +45,34 @@ void cetakh(int n){
 		cout << endl;
 	}
 }
+
+void gethcost (int len){
+	int n=len;
+	int h=0;
+	for (int i=0; i<len; i++)
+	{
+		for (int j=0; j<len; j++)
+		{
+			if (papan[j][i]==1)
+			{
+				printf ("kolom: %d baris: %d\n", j, i);
+				int k=0, l=1;
+				while (k<len)
+				{
+					hvalue[j][k]++;
+					hvalue[k][i]++;
+					hvalue[j+l][i+l]++;
+					hvalue[j-l][i-l]++;
+					cetakh(n);
+					k++;
+					l++;
+				}
+			}
+		}
+	}
+	
+}
+
 int main(){
 	int n, j , i;
 	cout << "isi banyak queen : ";
