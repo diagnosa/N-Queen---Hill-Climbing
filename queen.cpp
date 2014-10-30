@@ -56,17 +56,35 @@ void gethcost (int len){
 			if (papan[j][i]==1)
 			{
 				printf ("kolom: %d baris: %d\n", j, i);
-				int k=0, l=1;
+				int k=0, l;
+				//attempt baris
 				while (k<len)
 				{
-					hvalue[j][k]++;
 					hvalue[k][i]++;
-					hvalue[j+l][i+l]++;
-					hvalue[j-l][i-l]++;
-					cetakh(n);
+					k++;
+				}
+				k=0;
+				//attempt kolom
+				while (k<len){
+					hvalue[j][k]++;
+					k++;
+				}
+				//attempt diagonal utama belum jadi help
+				k=0, l=abs(j-i);
+				while (k<len)
+				{
+					hvalue[k][k+l]++;
+					k++;
+				}
+				//attempt diagonal bukan utama belum jadi help
+				k=0, l=abs(j-i);
+				while (k<len)
+				{
+					hvalue[k][k+l]++;
 					k++;
 					l++;
 				}
+				cetakh(n);
 			}
 		}
 	}
