@@ -12,29 +12,28 @@ vector< vector<int> > papan;
 vector< vector<int> > hvalue;
 void inisialisasi(int n){
 	int i, j, b;
+	srand(time(NULL));
 	for(i=0;i<n;i++){
 		kolom.push_back(0);
 	}
 	for(i=0;i<n;i++){
-		for(j=0;j<n;j++){
-			kolom[j]=0;
-		}
-		b= rand()%n;
-		kolom[b]=1;
 		papan.push_back(kolom);
 		hvalue.push_back(kolom);
+	}
+	for(i=0;i<n;i++){
+		b= rand()%n;
+		papan[b][i]=1;
 	}
 }
 void cetak(int n){
 	int i, j;
 	for(i=0; i<n; i++){
 		for(j=0;j<n;j++){
-			cout << papan[j][i] << " ";
+			cout << papan[i][j] << " ";
 		}
 		cout << endl;
 	}
 }
-
 
 void cetakh(int n){
 	int i, j;
@@ -94,7 +93,7 @@ void gethcost (int len){
 int main(){
 	int n, j , i;
 	cout << "isi banyak queen : ";
-	scanf("%d", &n);
+	cin >> n;
 	inisialisasi(n);
 	cetak(n);
 	gethcost(n);
