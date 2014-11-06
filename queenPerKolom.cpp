@@ -23,6 +23,7 @@ void inisialisasi(int n){
 	for(i=0;i<n;i++){
 		b= rand()%n;
 		papan[b][i]=1;
+		kolom[i]=b;
 	}
 }
 void cetak(int n){
@@ -45,7 +46,7 @@ void cetakh(int n){
 	int i;
 	for(i=0; i<n; i++){
 		cout << hvalue[i] << " ";
-	}	
+	}
 	cout << endl;
 }
 
@@ -98,36 +99,37 @@ void hillClimbing (int maxLen){
 	int hmax, indeks=0, cek;
 	while(1){
 		cek=1;
-		hmax=0;
+		hmax=999;
 		cekHValue(maxLen);
-		for(int i=0; i<=maxLen; i++){
-			if(hmax<hvalue[i]){
-				hmax=hvalue[i];
-				indeks=i;
-			}	
-		}
-		for(int i=0; i<=maxLen; i++){
-			if(papan[i][indeks]){
-				int temp;
-				if(i==maxLen) temp=0;
-				else temp=i+1;
-				swap(papan[i][indeks], papan[temp][indeks]);
-				break;
-			}
-		}
-		
 		for(int i=0; i<=maxLen; i++){
 			if(hvalue[i]>0){
 				cek=0;
 				break;
-			}	
+			}
 		}
+		for(int i=0; i<=maxLen; i++){
+			if(hmax>hvalue[i]){
+				hmax=hvalue[i];
+				indeks=i;
+				printf("%d\n", hmax);
+			}
+		}
+        cetakh(maxLen+1);
+        int temp, i;
+        i=kolom[indeks];
+        if(i==maxLen) temp=0;
+				else temp=i+1;
+				swap(papan[i][indeks], papan[temp][indeks]);
+        kolom[indeks]=temp;
+
+
 		cetak(maxLen+1);
+
 		system("pause");
 		if(cek) break;
 	}
-	
-	
+
+
 }
 
 int main(){
