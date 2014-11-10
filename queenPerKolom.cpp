@@ -10,7 +10,9 @@ using namespace std;
 vector<int> kolom;
 vector< vector<int> > papan;
 vector<int> hvalue;
+
 void inisialisasi(int n){
+	//inisialisasi dilakukan dengan merandom posisi baris tiap kolomnya
 	int i, j, b;
 	srand(time(NULL));
 	for(i=0;i<n;i++){
@@ -23,6 +25,7 @@ void inisialisasi(int n){
 	for(i=0;i<n;i++){
 		b= rand()%n;
 		papan[b][i]=1;
+		kolom[i]=b;
 	}
 }
 void cetak(int n){
@@ -45,11 +48,13 @@ void cetakh(int n){
 	int i;
 	for(i=0; i<n; i++){
 		cout << hvalue[i] << " ";
-	}	
+	}
 	cout << endl;
 }
 
 int getPair (int len, int baris, int kolom){
+	//fungsi ini untuk mencari jumlah ratu yang menyerang pion pada posisi : papan[baris][kolom]
+	//serangan dari sisi kiri diabaikan karena dianggap sudah dihitung pion sebelumnya untuk menghindari redudansi
 	int h = 0, j=0;
 	for(int i=kolom; i<len;){
 		i++;
@@ -78,6 +83,7 @@ void cekHValue(int max){
 		{
 			if (papan[l][k]==1) break;
 		}
+		/*mencari hvalue kalo dipindah ke bawah*/
 		if(l==max) temp=0;
 		else temp=l+1;
 		swap(papan[l][k], papan[temp][k]);
@@ -91,6 +97,11 @@ void cekHValue(int max){
 		}
 		hvalue[k]=h;
 		swap(papan[l][k], papan[temp][k]);
+		/*------------------------------------*/
+		
+		/*mencari hvalue kalo dipindah ke atas*/
+		
+		/*------------------------------------*/
 	}
 }
 
@@ -98,36 +109,36 @@ void hillClimbing (int maxLen){
 	int hmax, indeks=0, cek;
 	while(1){
 		cek=1;
-		hmax=0;
+		hmax=999;
 		cekHValue(maxLen);
-		for(int i=0; i<=maxLen; i++){
-			if(hmax<hvalue[i]){
-				hmax=hvalue[i];
-				indeks=i;
-			}	
-		}
-		for(int i=0; i<=maxLen; i++){
-			if(papan[i][indeks]){
-				int temp;
-				if(i==maxLen) temp=0;
-				else temp=i+1;
-				swap(papan[i][indeks], papan[temp][indeks]);
-				break;
-			}
-		}
-		
 		for(int i=0; i<=maxLen; i++){
 			if(hvalue[i]>0){
 				cek=0;
 				break;
-			}	
+			}
 		}
+		/*-------mencari hvalue terbesar-------*/
+		for(int i=0; i<=maxLen; i++){
+			if(hmax>hvalue[i]){
+				hmax=hvalue[i];
+				indeks=i;
+				printf("%d\n", hmax);
+			}
+		}
+		/*--------------------------------------*/
+	        cetakh(maxLen+1);
+	        int temp, i;
+	        i=kolom[indeks];
+	        if(i==maxLen) temp=0;
+		else temp=i+1;
+		swap(papan[i][indeks], papan[temp][indeks]);
+	        kolom[indeks]=temp;
 		cetak(maxLen+1);
 		system("pause");
-		if(cek) break;
+		if(cek) break; // berhenti jika cek bernilai 1 (seluruh nilai H bernilai 0)
 	}
-	
-	
+
+
 }
 
 int main(){
@@ -135,6 +146,7 @@ int main(){
 	cout << "isi banyak queen : ";
 	cin >> n;
 	inisialisasi(n);
+	cout <<endl;
 	cetak(n);
 	hillClimbing(n-1);
 	printf ("cek\n");
